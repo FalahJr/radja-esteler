@@ -68,12 +68,12 @@ class PublicController extends Controller
         ]);
     }
 
-    public function actionDetailWisata($id)
+    public function actionDetailMenu($id)
     {
-        $detail_wisata = Wisata::find()->where(['id' => $id])->one();
+        $detail_menu = Menu::find()->where(['id' => $id])->one();
 
-        return $this->render('detail-wisata', [
-            'detail_wisata' => $detail_wisata,
+        return $this->render('detail-menu', [
+            'detail_menu' => $detail_menu,
         ]);
     }
     public function actionPemerintahan()

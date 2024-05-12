@@ -53,24 +53,24 @@ $this->title = 'Radja Es Teler Sultan';
                 </div>
                 <?php
             } else {
-                foreach ($menu as $list_wisata) {
+                foreach ($menu as $list_menu) {
 
 
                 ?>
                     <div class="col-lg-4 col-md-6 col-12 mb-4">
-                        <a href="detail-wisata?id=<?= $list_wisata->id ?>">
+                        <a href="detail-menu?id=<?= $list_menu->id ?>">
                             <div class="card" style="width:335px">
-                                <!-- <?= Html::img('../../uploads/image/' . $list_wisata->gambar . '', ['class' => 'card-img-top rounded', 'width' => '100%', 'height' => '200vh']) ?> -->
-                                <div class="card-img-top rounded" style="background-image: url('../../uploads/image/<?= $list_wisata->gambar ?>'); background-size: cover; height: 200px;"></div>
+                                <!-- <?= Html::img('../../uploads/image/' . $list_menu->gambar . '', ['class' => 'card-img-top rounded', 'width' => '100%', 'height' => '200vh']) ?> -->
+                                <div class="card-img-top rounded" style="background-image: url('../../uploads/image/<?= $list_menu->gambar ?>'); background-size: cover; height: 200px;"></div>
 
                                 <div class="card-body">
                                     <h4 class="card-title">
-                                        <?= $list_wisata->nama ?>
+                                        <?= $list_menu->nama ?>
                                     </h4>
                                     <h6>
-                                        Rp. <?= $list_wisata->harga ?>
+                                        Rp. <?= $list_menu->harga ?>
                                     </h6>
-                                    <p class="card-text" style="overflow:hidden;"><?= $list_wisata->deskripsi ?>
+                                    <p class="card-text" style="overflow:hidden;"><?= $list_menu->deskripsi ?>
                                 </div>
                                 <div class="card-footer">
                                     <a href="detail-wisata" class="btn">Baca Selengkapnya</a>

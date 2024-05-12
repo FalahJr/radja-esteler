@@ -34,7 +34,7 @@ $this->title = 'Daftar Menu';
 
 				?>
 					<div class="col-lg-4 col-md-6 col-12 mb-4">
-						<a href="detail-wisata?id=<?= $list_menu->id ?>">
+						<a href="detail-menu?id=<?= $list_menu->id ?>">
 							<div class="card" style="width:335px">
 
 								<div class="card-img-top rounded" style="background-image: url('../../uploads/image/<?= $list_menu->gambar ?>'); background-size: cover; height: 200px;"></div>
