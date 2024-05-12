@@ -586,9 +586,9 @@ nav ul li a {
 }
 
 #portofolios {
-  margin-bottom: 30rem;
+  /* margin-bottom: 30rem; */
   background: #0b3f6880;
-  height: 70vh;
+  /* height: 70vh; */
   padding: 30px;
   /* margin-bottom:170px; */
 }
