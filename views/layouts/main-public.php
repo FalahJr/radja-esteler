@@ -26,14 +26,10 @@ $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/x-icon', 'href' => '@w
 <head>
     <title><?= Html::encode($this->title) ?></title>
     <?php $this->head() ?>
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css"
-     integrity="sha256-kLaT2GOSpHechhsozzB+flnD+zUyjE2LlfWPgU04xyI="
-     crossorigin=""/>
-      <!-- Make sure you put this AFTER Leaflet's CSS -->
- <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"
-     integrity="sha256-WBkoXOwTeyKclOHuWtc+i2uENFpDZ9YPdf5Hf+D7ewM="
-     crossorigin=""></script>
-     <!-- <style>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css" integrity="sha256-kLaT2GOSpHechhsozzB+flnD+zUyjE2LlfWPgU04xyI=" crossorigin="" />
+    <!-- Make sure you put this AFTER Leaflet's CSS -->
+    <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js" integrity="sha256-WBkoXOwTeyKclOHuWtc+i2uENFpDZ9YPdf5Hf+D7ewM=" crossorigin=""></script>
+    <!-- <style>
         #map { height: 180px; }
 
      </style> -->
@@ -46,21 +42,19 @@ $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/x-icon', 'href' => '@w
         <!-- <a class="navbar-brand" href="index">
             <h4>WONOSALAM<br>BERDIKARI</h4>
         </a> -->
-        <?= Html::a('<h4>SIGESIT</h4>', ['index'], ['class' => 'navbar-brand']) ?>
+        <?= Html::a('<h4>Radja Es Teler Sultan</h4>', ['index'], ['class' => 'navbar-brand']) ?>
 
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarNavDropdown">
             <ul class=" navbar-nav ml-auto">
-             <li class="nav-item">
+                <li class="nav-item">
                     <?= Html::a('Beranda', ['index'], ['class' => 'nav-link nunitoSemiBold']) ?>
                 </li>
+
                 <li class="nav-item">
-                    <?= Html::a('Sejarah', ['sejarah'], ['class' => 'nav-link nunitoSemiBold']) ?>
-                </li>
-                <li class="nav-item">
-                    <?= Html::a('Wisata', ['wisata'], ['class' => 'nav-link nunitoSemiBold']) ?>
+                    <?= Html::a('Daftar Menu', ['menu'], ['class' => 'nav-link nunitoSemiBold']) ?>
                 </li>
             </ul>
         </div>
@@ -82,31 +76,31 @@ $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/x-icon', 'href' => '@w
             <div class="container text-md-left mt-5">
                 <div class="row mt-3">
                     <div class="col-md-6 col-lg-3 col-xl-3 mx-auto mb-4">
-                    <h3 class="text-uppercase font-weight-bold">SIGESIT</h3>
+                        <h3 class="text-uppercase font-weight-bold">Radja Es Teler Sultan</h3>
                         <hr class="accent-2 mb-4 mt-0 d-inline-block mx-auto" style="width: 60px; background-color: white;">
-                        
+
                     </div>
                     <div class="col-md-6 col-lg-3 col-xl-3 mx-auto mb-4">
-                    <p class="text-white">Merupakan Website Sistem Informasi Gresik Tourism yang bertujuan untuk membantu masyarakat luas untuk lebih
-                    mengenal wisata di Gresik</p>
+                        <p class="text-white">Merupakan Website Sistem Informasi Gresik Tourism yang bertujuan untuk membantu masyarakat luas untuk lebih
+                            mengenal wisata di Gresik</p>
                     </div>
-                    <div class="col-md-6 col-lg-3 col-xl-3 mx-auto mb-4">
-                    <h6 class="text-uppercase font-weight-bold">Dosen Pembimbing :</h6>
-                    <hr class="accent-2 mb-3 mt-0 d-inline-block mx-auto" style="width: 60px; background-color: white;">
-                    
-                    <p class="text-white">
-                    
-Dr.                    Eko Budiyanto, S.Pd., M.Si.
-                    </p>
-                    </div>
-                    
+                    <!-- <div class="col-md-6 col-lg-3 col-xl-3 mx-auto mb-4">
+                        <h6 class="text-uppercase font-weight-bold">Dosen Pembimbing :</h6>
+                        <hr class="accent-2 mb-3 mt-0 d-inline-block mx-auto" style="width: 60px; background-color: white;">
+
+                        <p class="text-white">
+
+                            Dr. Eko Budiyanto, S.Pd., M.Si.
+                        </p>
+                    </div> -->
+
                     <div class="col-md-6 col-lg-3 col-xl-3 mx-auto mb-md-0 mb-4">
                         <h6 class="text-uppercase font-weight-bold">Contact Us</h6>
                         <hr class="accent-2 mb-3 mt-0 d-inline-block mx-auto" style="width: 60px; background-color: white;">
                         <div class="row">
                             <div class="col-12 col-md-12">
                                 <p class="footer-text">Email : mario.19026@mhs.unesa.ac.id</p>
-                                <p class="footer-text">Instagram : @marioadise</p>
+                                <!-- <p class="footer-text">Instagram : @marioadise</p> -->
                             </div>
                         </div>
 
@@ -122,7 +116,7 @@ Dr.                    Eko Budiyanto, S.Pd., M.Si.
 
         <!-- Copyright -->
         <div class="footer-copyright text-center">
-            <p class="nunitoRegular">Sigesit 2023 - By : Mario Adi Setiawan </p>
+            <p class="nunitoRegular">Radja Es Teler Sultan 2024 - By : Flo </p>
         </div>
         <!-- End Copyright -->
 
