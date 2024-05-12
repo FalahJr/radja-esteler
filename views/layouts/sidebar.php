@@ -14,7 +14,7 @@ if (Yii::$app->user->isGuest) {
     <!-- Brand Logo -->
     <a href="index3.html" class="brand-link text-center">
         <!-- <img src="<?php echo $assetDir ?>/img/AdminLTELogo.png" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8"> -->
-        <span class="brand-text font-weight-light ">Wisata Gresik</span>
+        <span class="brand-text font-weight-light ">Radja Es Teler Sultan</span>
     </a>
 
     <!-- Sidebar -->
@@ -47,7 +47,7 @@ if (Yii::$app->user->isGuest) {
 
                     //     ]
                     // ],
-                    ['label' => 'Kategori', 'url' => ['menu/index'], 'iconStyle' => 'far'],
+                    ['label' => 'Daftar Menu', 'url' => ['menu/index'], 'iconStyle' => 'far'],
 
 
                 ],
