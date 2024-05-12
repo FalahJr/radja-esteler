@@ -58,18 +58,12 @@ class PublicController extends Controller
         return $this->render('detail-blog');
     }
 
-    public function actionWisata()
+    public function actionMenu()
     {
-        $alam_and_nature_sports = Wisata::find()->where(['wisata_kategori_id' => 1])->all();
-        $religi = Wisata::find()->where(['wisata_kategori_id' => 2])->all();
-        $buatan = Wisata::find()->where(['wisata_kategori_id' => 3])->all();
-        $budaya = Wisata::find()->where(['wisata_kategori_id' => 4])->all();
+        $menu = Menu::find()->all();
 
-        return $this->render('wisata', [
-            'religi' => $religi,
-            'alam_and_nature_sports' => $alam_and_nature_sports,
-            'buatan' => $buatan,
-            'budaya' => $budaya,
+        return $this->render('menu', [
+            'menu' => $menu,
 
         ]);
     }
