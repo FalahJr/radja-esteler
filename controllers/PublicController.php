@@ -10,6 +10,7 @@ use yii\filters\VerbFilter;
 use app\models\LoginForm;
 use app\models\ContactForm;
 use app\models\MataPencaharian;
+use app\models\Menu;
 use app\models\Pendidikan;
 use app\models\Penduduk;
 use app\models\PotensiPertanian;
@@ -41,9 +42,9 @@ class PublicController extends Controller
     public function actionIndex()
     {
 
-        $wisata_map = Wisata::find()->all();
-        return $this->render('index',[
-            'wisata_map' => $wisata_map,
+        $menu = Menu::find()->all();
+        return $this->render('index', [
+            'menu' => $menu,
         ]);
     }
 
@@ -63,7 +64,7 @@ class PublicController extends Controller
         $religi = Wisata::find()->where(['wisata_kategori_id' => 2])->all();
         $buatan = Wisata::find()->where(['wisata_kategori_id' => 3])->all();
         $budaya = Wisata::find()->where(['wisata_kategori_id' => 4])->all();
-       
+
         return $this->render('wisata', [
             'religi' => $religi,
             'alam_and_nature_sports' => $alam_and_nature_sports,
