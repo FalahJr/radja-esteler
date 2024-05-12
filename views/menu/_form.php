@@ -16,16 +16,17 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'deskripsi')->textarea(['rows' => 6]) ?>
 
-    <?= $form->field($model, 'gambar')->textInput(['maxlength' => true]) ?>
+    <?= $form->field($model, 'gambar')->fileInput(['accept' => 'image/*']) ?>
+
 
     <?= $form->field($model, 'harga')->textInput() ?>
 
-    <?= $form->field($model, 'created_date')->textInput() ?>
+    <?= $form->field($model, 'created_date')->hiddenInput(['maxlength' => true, 'value' => Yii::$app->formatter->asDatetime('now', 'php:Y-m-d H:i:s')])->label(false) ?>
 
-    <?= $form->field($model, 'update_date')->textInput() ?>
+    <?= $form->field($model, 'update_date')->hiddenInput(['maxlength' => true, 'value' => Yii::$app->formatter->asDatetime('now', 'php:Y-m-d H:i:s')])->label(false) ?>
 
     <div class="form-group">
-        <?= Html::submitButton('Save', ['class' => 'btn btn-success']) ?>
+        <?= Html::submitButton('Simpan', ['class' => 'btn btn-success']) ?>
     </div>
 
     <?php ActiveForm::end(); ?>

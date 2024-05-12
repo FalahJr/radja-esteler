@@ -4,7 +4,7 @@
 
 use yii\helpers\Html;
 
-$this->title = 'SIGESIT';
+$this->title = 'Radja Es Teler Sultan';
 ?>
 <!-- Slideshow Start -->
 <div class="scroll" id="home"></div>
@@ -35,34 +35,57 @@ $this->title = 'SIGESIT';
 <!-- Portofolio Section -->
 <!-- <div class="scroll" id="portofolio"></div> -->
 <section class="" id="portofolios">
-    <!-- <div class="portofolio-content"> -->
     <div class="container">
-        <!-- <center> -->
-        <div class="row">
-            <div class="col-12 mb-5 d-flex justify-content-center">
-                <h2 class="loraSemiBold">PETA WISATA KABUPATEN GRESIK</h2>
+        <div class="row title-card">
+            <div class="col-lg-3 col-md-12">
+                <h2 class="loraBold">Daftar Menu</h2>
+            </div>
+            <div class="col-lg-9 col-md-12 horizontal justify-content-center">
+                <hr>
             </div>
         </div>
-        <!-- </center> -->
-
-        <!-- <div class="row justify-content-center d-flex"> -->
-
-        <!-- </div> -->
-        <div class="row justify-content-center d-flex">
-            <div class="text-maps mt-4 ">
-                <h5>Alamat Kantor Bupati Gresik</h5>
-                <p>Jl. DR. Wahidin Sudiro Husodo No.245-c, Kembangan, Kec. Kebomas, Kabupaten Gresik, Jawa Timur 61124
-                </p>
-                <hr style="border: 1px solid #0B3F68B2;">
-                <p>
-                    Lokasi Kabupaten Gresik terletak di sebelah Barat Laut Kota Surabaya yang merupakan Ibukota Propinsi Jawa Timur dengan luas wilayah 1.191,25 km2 yang terbagi dalam 18 kecamatan, 330 desa, dan 26 kelurahan. Secara geografis wilayah Kabupaten Gresik terletak antara 112Â° sampai 113Â° Bujur Timur dan 7Â° sampai 8Â° Lintang Selatan serta merupakan dataran rendah dengan ketinggian 2 sampai 12 meter di atas permukaan air laut, kecuali Kecamatan Panceng yang mempunyai ketinggian 25 meter di atas permukaan air laut. <br><br>
-                    Kabupaten Gresik memilik 40 destinasi wisata terbagi menjadi 4 kategori wisata yaitu Wisata Alam / Nature Spots, Wisata Religi, Wisata Buatan, Wisata Budaya.
+        <div class="row mt-5 card-content">
+            <?php
+            if ($menu == null) {
+            ?>
+                <div class="col-12 mb-4 text-center">
+                    <h4>Tidak Ada Data</h4>
+                </div>
+                <?php
+            } else {
+                foreach ($menu as $list_wisata) {
 
 
-                </p>
-            </div>
+                ?>
+                    <div class="col-lg-4 col-md-6 col-12 mb-4">
+                        <a href="detail-wisata?id=<?= $list_wisata->id ?>">
+                            <div class="card" style="width:335px">
+                                <!-- <?= Html::img('../../uploads/image/' . $list_wisata->gambar . '', ['class' => 'card-img-top rounded', 'width' => '100%', 'height' => '200vh']) ?> -->
+                                <div class="card-img-top rounded" style="background-image: url('../../uploads/image/<?= $list_wisata->gambar ?>'); background-size: cover; height: 200px;"></div>
+
+                                <div class="card-body">
+                                    <h4 class="card-title">
+                                        <?= $list_wisata->nama ?>
+                                    </h4>
+                                    <h6>
+                                        Rp. <?= $list_wisata->harga ?>
+                                    </h6>
+                                    <p class="card-text" style="overflow:hidden;"><?= $list_wisata->deskripsi ?>
+                                </div>
+                                <div class="card-footer">
+                                    <a href="detail-wisata" class="btn">Baca Selengkapnya</a>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+            <?php
+                };
+            }
+            ?>
         </div>
     </div>
+    <!-- <div class="portofolio-content"> -->
+
     <!-- </div> -->
     <!-- </div> -->
 </section>
@@ -125,43 +148,6 @@ $this->title = 'SIGESIT';
     //         },
     //     }).addTo(map);
     // }
-
-    <?php
-    foreach ($wisata_map as $list_wisata) {
-    ?>
-        L.marker([<?php echo $list_wisata->latitude_y . ',' . $list_wisata->longitude_x; ?>], {
-                icon: <?php if ($list_wisata->wisata_kategori_id == 1) {
-                            echo 'alam';
-                        } elseif ($list_wisata->wisata_kategori_id == 2) {
-                            echo 'religi';
-                        } elseif ($list_wisata->wisata_kategori_id == 3) {
-                            echo 'buatan';
-                        } else {
-                            echo 'budaya';
-                        }
-                        ?>
-            }).addTo(map)
-            .bindPopup(`<?php echo 'Nama Wisata : ' . $list_wisata['judul'] . '<br> Kategori : ' . $list_wisata->wisataKategori->nama ?>`);
-        // .bindPopup('<b>Hello world!</b><br />I am a popup.').openPopup();
-
-
-
-    <?php } ?>
-
-
-    const popup = L.popup()
-        .setLatLng([-7.157358, 112.656169])
-        .setContent('Kabupaten Gresik')
-        .openOn(map);
-
-    // function onMapClick(e) {
-    //     popup
-    //         .setLatLng(e.latlng)
-    //         .setContent(`You clicked the map at ${e.latlng.toString()}`)
-    //         .openOn(map);
-    // }
-
-    map.on('click', onMapClick);
 </script>
 
 <!-- end Portofolio Section -->
