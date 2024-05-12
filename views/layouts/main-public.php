@@ -81,8 +81,8 @@ $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/x-icon', 'href' => '@w
 
                     </div>
                     <div class="col-md-6 col-lg-3 col-xl-3 mx-auto mb-4">
-                        <p class="text-white">Merupakan Website Sistem Informasi Gresik Tourism yang bertujuan untuk membantu masyarakat luas untuk lebih
-                            mengenal wisata di Gresik</p>
+                        <p class="text-white">Radja Es Teler Sultan, Open Outlet 08.00-17.00 (Rabu Close) Deltasari Indah Blok AA-8, Sidoarjo
+                        </p>
                     </div>
                     <!-- <div class="col-md-6 col-lg-3 col-xl-3 mx-auto mb-4">
                         <h6 class="text-uppercase font-weight-bold">Dosen Pembimbing :</h6>
@@ -99,7 +99,7 @@ $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/x-icon', 'href' => '@w
                         <hr class="accent-2 mb-3 mt-0 d-inline-block mx-auto" style="width: 60px; background-color: white;">
                         <div class="row">
                             <div class="col-12 col-md-12">
-                                <p class="footer-text">Email : mario.19026@mhs.unesa.ac.id</p>
+                                <p class="footer-text">⁠⁠Instagram: @radja_estelersultan_deltasari</p>
                                 <!-- <p class="footer-text">Instagram : @marioadise</p> -->
                             </div>
                         </div>
@@ -116,7 +116,7 @@ $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/x-icon', 'href' => '@w
 
         <!-- Copyright -->
         <div class="footer-copyright text-center">
-            <p class="nunitoRegular">Radja Es Teler Sultan 2024 - By : Flo </p>
+            <p class="nunitoRegular">Radja Es Teler Sultan 2024 </p>
         </div>
         <!-- End Copyright -->
 

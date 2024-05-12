@@ -21,14 +21,14 @@ $this->title = $detail_menu['nama'];
 						<div class="carousel-inner mt-4">
 							<div class="carousel-item active">
 								<!-- <img src="assets/img/card-blog.png" alt="Los Angeles"> -->
-								<?= Html::img('../../uploads/image/' . $detail_menu['gambar'] . '', ['width' => '20%']) ?>
+								<?= Html::img('../../uploads/image/' . $detail_menu['gambar'] . '', ['width' => '20%',]) ?>
 							</div>
 						</div>
 
 
 					</div>
 					<div>
-						<p align="center" class="slide-text nunitoRegular">
+						<p align="center" class="slide-text nunitoRegular text-capitalize ">
 							<?= $detail_menu['deskripsi'] ?>
 							<br><br>
 

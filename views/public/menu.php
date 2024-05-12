@@ -40,16 +40,16 @@ $this->title = 'Daftar Menu';
 								<div class="card-img-top rounded" style="background-image: url('../../uploads/image/<?= $list_menu->gambar ?>'); background-size: cover; height: 200px;"></div>
 
 								<div class="card-body">
-									<h4 class="card-title">
+									<h4 class="card-title text-capitalize ">
 										<?= $list_menu->nama ?>
 									</h4>
 									<h6>
 										Rp. <?= $list_menu->harga ?>
 									</h6>
-									<p class="card-text" style="overflow:hidden;"><?= $list_menu->deskripsi ?>
+									<p class="card-text text-capitalize " style="overflow:hidden;"><?= $list_menu->deskripsi ?>
 								</div>
 								<div class="card-footer">
-									<a href="detail-wisata" class="btn">Baca Selengkapnya</a>
+									<a href="detail-menu?id=<?= $list_menu->id ?>" class="btn">Baca Selengkapnya</a>
 								</div>
 							</div>
 						</a>

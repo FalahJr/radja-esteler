@@ -14,10 +14,10 @@ $this->title = 'Radja Es Teler Sultan';
             <div class="col-12 col-lg-7 align-self-center">
                 <p class="textWhite d-inline animation1">Selamat Datang</p>
                 <h1 class="loraBold mt-4 animation2">Di Radja Es Teler Sultan </h1>
-                <p class="mt-3 desc animation3">Semoga Website ini dapat membantu masyarakat luas untuk lebih
-                    mengenal wisata di Gresik</p>
-                <p class="desc animation3">
-                    Let's explore one of the cities in Indonesia which is known as an industrial city
+                <p class="mt-3 desc animation3 text-capitalize ">semoga website ini dapat membantumu untuk infomasi lebih lanjut dan dapat mengenal radja es teler sultan dalam proses pembelian,</p>
+                <p class="desc animation3 text-capitalize ">
+                    we hope u enjoy
+
                 </p>
 
             </div>
@@ -64,16 +64,16 @@ $this->title = 'Radja Es Teler Sultan';
                                 <div class="card-img-top rounded" style="background-image: url('../../uploads/image/<?= $list_menu->gambar ?>'); background-size: cover; height: 200px;"></div>
 
                                 <div class="card-body">
-                                    <h4 class="card-title">
+                                    <h4 class="card-title text-capitalize ">
                                         <?= $list_menu->nama ?>
                                     </h4>
                                     <h6>
                                         Rp. <?= $list_menu->harga ?>
                                     </h6>
-                                    <p class="card-text" style="overflow:hidden;"><?= $list_menu->deskripsi ?>
+                                    <p class="card-text text-capitalize " style="overflow:hidden;"><?= $list_menu->deskripsi ?>
                                 </div>
                                 <div class="card-footer">
-                                    <a href="detail-wisata" class="btn">Baca Selengkapnya</a>
+                                    <a href="detail-menu?id=<?= $list_menu->id ?>" class="btn">Baca Selengkapnya</a>
                                 </div>
                             </div>
                         </a>
