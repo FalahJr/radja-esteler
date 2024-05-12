@@ -1,4 +1,4 @@
 <footer class="main-footer">
-    <strong>Copyright &copy; 2023 Wisata Gresik.</strong>
+    <strong>Copyright &copy; 2024 Radja Es Teler Sultan.</strong>
 
 </footer>
