@@ -19,7 +19,7 @@ use yii\widgets\ActiveForm;
     <?= $form->field($model, 'gambar')->fileInput(['accept' => 'image/*']) ?>
 
 
-    <?= $form->field($model, 'harga')->textInput() ?>
+    <?= $form->field($model, 'harga')->textInput(['type' => 'number', 'min' => 0]) ?>
 
     <?= $form->field($model, 'created_date')->hiddenInput(['maxlength' => true, 'value' => Yii::$app->formatter->asDatetime('now', 'php:Y-m-d H:i:s')])->label(false) ?>
 
