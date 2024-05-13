@@ -38,7 +38,7 @@ $this->title = 'Radja Es Teler Sultan';
     <div class="container">
         <div class="row title-card">
             <div class="col-lg-3 col-md-12">
-                <h2 class="loraBold">Daftar Menu</h2>
+                <h2 class="loraBold text-light ">Daftar Menu</h2>
             </div>
             <div class="col-lg-9 col-md-12 horizontal justify-content-center">
                 <hr>
@@ -78,8 +78,13 @@ $this->title = 'Radja Es Teler Sultan';
                             </div>
                         </a>
                     </div>
-            <?php
+                <?php
                 };
+                ?>
+                <div class="" style="display:flex; justify-content:center;width:100%">
+                    <a href="menu" class="btn btn-primary btn-lg mt-3">Menu Lainnya</a>
+                </div>
+            <?php
             }
             ?>
         </div>

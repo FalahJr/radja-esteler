@@ -42,11 +42,13 @@ $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/x-icon', 'href' => '@w
         <!-- <a class="navbar-brand" href="index">
             <h4>WONOSALAM<br>BERDIKARI</h4>
         </a> -->
-        <?= Html::a('<h4>Radja Es Teler Sultan</h4>', ['index'], ['class' => 'navbar-brand']) ?>
+        <div class="d-flex">
+            <?= Html::a(Html::img('@web/img/home3.jpeg', ['width' => '15%']), ['index'], ['class' => 'navbar-brand ml-4']) ?>
 
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
+            <button class="navbar-toggler bg-white p-2" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon "></span>
+            </button>
+        </div>
         <div class="collapse navbar-collapse" id="navbarNavDropdown">
             <ul class=" navbar-nav ml-auto">
                 <li class="nav-item">

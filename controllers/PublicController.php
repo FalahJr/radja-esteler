@@ -8,16 +8,9 @@ use yii\web\Controller;
 use yii\web\Response;
 use yii\filters\VerbFilter;
 use app\models\LoginForm;
-use app\models\ContactForm;
-use app\models\MataPencaharian;
+
 use app\models\Menu;
-use app\models\Pendidikan;
-use app\models\Penduduk;
-use app\models\PotensiPertanian;
-use app\models\PotensiPeternakan;
-use app\models\StrukturDesa;
-use app\models\Wisata;
-use app\models\VisiMisi;
+
 
 class PublicController extends Controller
 {
@@ -42,7 +35,7 @@ class PublicController extends Controller
     public function actionIndex()
     {
 
-        $menu = Menu::find()->all();
+        $menu = Menu::find()->limit(6)->all();
         return $this->render('index', [
             'menu' => $menu,
         ]);
@@ -76,44 +69,6 @@ class PublicController extends Controller
             'detail_menu' => $detail_menu,
         ]);
     }
-    public function actionPemerintahan()
-    {
-        $struktur_desa = StrukturDesa::find()->where(['not', ['jabatan' => 'Kepala Desa']])->all();
-        $kepala_desa = StrukturDesa::find()->where(['jabatan' => 'Kepala Desa'])->one();
-        $visi_misi = VisiMisi::find()->one();
-        return $this->render('pemerintahan', [
-            'struktur_desa' => $struktur_desa,
-            'kepala_desa' => $kepala_desa,
-            'visi_misi' => $visi_misi,
-        ]);
-    }
-    public function actionPerkembanganDesa()
-    {
-
-        $penduduk = Penduduk::find()->one();
-        $pendidikan = Pendidikan::find()->all();
-        $pekerjaan = MataPencaharian::find()->all();
-        return $this->render('perkembangan-desa', [
-            'penduduk' => $penduduk,
-            'pendidikan' => $pendidikan,
-            'pekerjaan' => $pekerjaan,
-        ]);
-    }
-    public function actionPotensi()
-    {
-        $pertanian = PotensiPertanian::find()->all();
-        $peternakan = PotensiPeternakan::find()->all();
-        return $this->render('potensi', [
-            'pertanian' => $pertanian,
-            'peternakan' => $peternakan,
-
-        ]);
-    }
-    public function actionSejarah()
-    {
-        return $this->render('sejarah');
-    }
-
 
 
 
