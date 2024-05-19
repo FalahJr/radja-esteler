@@ -18,7 +18,7 @@ class BeritaSearch extends Berita
     {
         return [
             [['id'], 'integer'],
-            [['judul', 'deskripsi', 'gambar', 'created_at', 'updated_at'], 'safe'],
+            [['judul', 'deskripsi', 'gambar', 'created_date', 'updated_date'], 'safe'],
         ];
     }
 
@@ -59,8 +59,8 @@ class BeritaSearch extends Berita
         // grid filtering conditions
         $query->andFilterWhere([
             'id' => $this->id,
-            'created_at' => $this->created_at,
-            'updated_at' => $this->updated_at,
+            'created_date' => $this->created_date,
+            'updated_date' => $this->updated_date,
         ]);
 
         $query->andFilterWhere(['like', 'judul', $this->judul])

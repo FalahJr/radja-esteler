@@ -6,7 +6,6 @@ namespace app\models\base;
 
 use Yii;
 use yii\helpers\ArrayHelper;
-use yii\behaviors\TimestampBehavior;
 
 /**
  * This is the base-model class for table "berita".
@@ -15,8 +14,8 @@ use yii\behaviors\TimestampBehavior;
  * @property string $judul
  * @property string $deskripsi
  * @property string $gambar
- * @property string $created_at
- * @property string $updated_at
+ * @property string $created_date
+ * @property string $updated_date
  * @property string $aliasModel
  */
 abstract class Berita extends \yii\db\ActiveRecord
@@ -35,23 +34,12 @@ abstract class Berita extends \yii\db\ActiveRecord
     /**
      * @inheritdoc
      */
-    public function behaviors()
-    {
-        return [
-            [
-                'class' => TimestampBehavior::className(),
-            ],
-        ];
-    }
-
-    /**
-     * @inheritdoc
-     */
     public function rules()
     {
         return ArrayHelper::merge(parent::rules(), [
-            [['judul', 'deskripsi', 'gambar'], 'required'],
+            [['judul', 'deskripsi', 'gambar', 'created_date', 'updated_date'], 'required'],
             [['deskripsi'], 'string'],
+            [['created_date', 'updated_date'], 'safe'],
             [['judul'], 'string', 'max' => 150],
             [['gambar'], 'string', 'max' => 255]
         ]);
@@ -67,8 +55,8 @@ abstract class Berita extends \yii\db\ActiveRecord
             'judul' => 'Judul',
             'deskripsi' => 'Deskripsi',
             'gambar' => 'Gambar',
-            'created_at' => 'Created At',
-            'updated_at' => 'Updated At',
+            'created_date' => 'Created Date',
+            'updated_date' => 'Updated Date',
         ];
     }
 
