@@ -30,32 +30,10 @@ use PhpCsFixer\Tokenizer\Tokens;
  */
 final class ConcatSpaceFixer extends AbstractFixer implements ConfigurableFixerInterface
 {
-    /**
-     * @var null|string
-     */
-    private $fixCallback;
-
-    /**
-     * {@inheritdoc}
-     */
-    public function configure(array $configuration): void
-    {
-        parent::configure($configuration);
-
-        if ('one' === $this->configuration['spacing']) {
-            $this->fixCallback = 'fixConcatenationToSingleSpace';
-        } else {
-            $this->fixCallback = 'fixConcatenationToNoSpace';
-        }
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getDefinition(): FixerDefinitionInterface
     {
         return new FixerDefinition(
-            'Concatenation should be spaced according configuration.',
+            'Concatenation should be spaced according to configuration.',
             [
                 new CodeSample(
                     "<?php\n\$foo = 'bar' . 3 . 'baz'.'qux';\n"
@@ -82,30 +60,24 @@ final class ConcatSpaceFixer extends AbstractFixer implements ConfigurableFixerI
         return 0;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function isCandidate(Tokens $tokens): bool
     {
         return $tokens->isTokenKindFound('.');
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
-        $callBack = $this->fixCallback;
         for ($index = $tokens->count() - 1; $index >= 0; --$index) {
             if ($tokens[$index]->equals('.')) {
-                $this->{$callBack}($tokens, $index);
+                if ('one' === $this->configuration['spacing']) {
+                    $this->fixConcatenationToSingleSpace($tokens, $index);
+                } else {
+                    $this->fixConcatenationToNoSpace($tokens, $index);
+                }
             }
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function createConfigurationDefinition(): FixerConfigurationResolverInterface
     {
         return new FixerConfigurationResolver([
@@ -147,10 +119,17 @@ final class ConcatSpaceFixer extends AbstractFixer implements ConfigurableFixerI
      */
     private function fixWhiteSpaceAroundConcatToken(Tokens $tokens, int $index, int $offset): void
     {
+        if (-1 !== $offset && 1 !== $offset) {
+            throw new \InvalidArgumentException(sprintf(
+                'Expected `-1|1` for "$offset", got "%s"',
+                $offset
+            ));
+        }
+
         $offsetIndex = $index + $offset;
 
         if (!$tokens[$offsetIndex]->isWhitespace()) {
-            $tokens->insertAt($index + (1 === $offset ?: 0), new Token([T_WHITESPACE, ' ']));
+            $tokens->insertAt($index + (1 === $offset ? 1 : 0), new Token([T_WHITESPACE, ' ']));
 
             return;
         }

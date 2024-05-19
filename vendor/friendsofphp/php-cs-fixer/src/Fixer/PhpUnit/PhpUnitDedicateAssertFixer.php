@@ -34,7 +34,7 @@ use PhpCsFixer\Tokenizer\Tokens;
 final class PhpUnitDedicateAssertFixer extends AbstractPhpUnitFixer implements ConfigurableFixerInterface
 {
     /**
-     * @var array<string, array<string, bool|int|string>|true>
+     * @var array<string, array{positive: string, negative: false|string, argument_count?: int, swap_arguments?: true}|true>
      */
     private static array $fixMap = [
         'array_key_exists' => [
@@ -109,13 +109,10 @@ final class PhpUnitDedicateAssertFixer extends AbstractPhpUnitFixer implements C
     ];
 
     /**
-     * @var string[]
+     * @var list<string>
      */
     private array $functions = [];
 
-    /**
-     * {@inheritdoc}
-     */
     public function configure(array $configuration): void
     {
         parent::configure($configuration);
@@ -174,17 +171,11 @@ final class PhpUnitDedicateAssertFixer extends AbstractPhpUnitFixer implements C
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function isRisky(): bool
     {
         return true;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getDefinition(): FixerDefinitionInterface
     {
         return new FixerDefinition(
@@ -233,9 +224,6 @@ final class MyTest extends \PHPUnit_Framework_TestCase
         return -9;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function applyPhpUnitClassFix(Tokens $tokens, int $startIndex, int $endIndex): void
     {
         $argumentsAnalyzer = new ArgumentsAnalyzer();
@@ -261,9 +249,6 @@ final class MyTest extends \PHPUnit_Framework_TestCase
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function createConfigurationDefinition(): FixerConfigurationResolverInterface
     {
         return new FixerConfigurationResolver([

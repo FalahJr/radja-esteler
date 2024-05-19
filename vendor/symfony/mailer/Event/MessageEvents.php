@@ -18,15 +18,8 @@ use Symfony\Component\Mime\RawMessage;
  */
 class MessageEvents
 {
-    /**
-     * @var MessageEvent[]
-     */
-    private array $events = [];
-
-    /**
-     * @var array<string, bool>
-     */
-    private array $transports = [];
+    private $events = [];
+    private $transports = [];
 
     public function add(MessageEvent $event): void
     {
@@ -42,7 +35,7 @@ class MessageEvents
     /**
      * @return MessageEvent[]
      */
-    public function getEvents(string $name = null): array
+    public function getEvents(?string $name = null): array
     {
         if (null === $name) {
             return $this->events;
@@ -61,7 +54,7 @@ class MessageEvents
     /**
      * @return RawMessage[]
      */
-    public function getMessages(string $name = null): array
+    public function getMessages(?string $name = null): array
     {
         $events = $this->getEvents($name);
         $messages = [];

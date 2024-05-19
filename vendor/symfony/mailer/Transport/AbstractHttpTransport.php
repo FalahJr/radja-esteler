@@ -28,7 +28,7 @@ abstract class AbstractHttpTransport extends AbstractTransport
     protected $port;
     protected $client;
 
-    public function __construct(HttpClientInterface $client = null, EventDispatcherInterface $dispatcher = null, LoggerInterface $logger = null)
+    public function __construct(?HttpClientInterface $client = null, ?EventDispatcherInterface $dispatcher = null, ?LoggerInterface $logger = null)
     {
         $this->client = $client;
         if (null === $client) {
@@ -45,7 +45,7 @@ abstract class AbstractHttpTransport extends AbstractTransport
     /**
      * @return $this
      */
-    public function setHost(?string $host): static
+    public function setHost(?string $host)
     {
         $this->host = $host;
 
@@ -55,7 +55,7 @@ abstract class AbstractHttpTransport extends AbstractTransport
     /**
      * @return $this
      */
-    public function setPort(?int $port): static
+    public function setPort(?int $port)
     {
         $this->port = $port;
 

@@ -26,11 +26,11 @@ use Symfony\Component\Mailer\Transport\Smtp\Stream\SocketStream;
  */
 class EsmtpTransport extends SmtpTransport
 {
-    private array $authenticators = [];
-    private string $username = '';
-    private string $password = '';
+    private $authenticators = [];
+    private $username = '';
+    private $password = '';
 
-    public function __construct(string $host = 'localhost', int $port = 0, bool $tls = null, EventDispatcherInterface $dispatcher = null, LoggerInterface $logger = null)
+    public function __construct(string $host = 'localhost', int $port = 0, ?bool $tls = null, ?EventDispatcherInterface $dispatcher = null, ?LoggerInterface $logger = null)
     {
         parent::__construct(null, $dispatcher, $logger);
 
@@ -66,7 +66,7 @@ class EsmtpTransport extends SmtpTransport
     /**
      * @return $this
      */
-    public function setUsername(string $username): static
+    public function setUsername(string $username): self
     {
         $this->username = $username;
 
@@ -81,7 +81,7 @@ class EsmtpTransport extends SmtpTransport
     /**
      * @return $this
      */
-    public function setPassword(string $password): static
+    public function setPassword(string $password): self
     {
         $this->password = $password;
 
@@ -100,7 +100,9 @@ class EsmtpTransport extends SmtpTransport
 
     protected function doHeloCommand(): void
     {
-        $capabilities = $this->callHeloCommand();
+        if (!$capabilities = $this->callHeloCommand()) {
+            return;
+        }
 
         /** @var SocketStream $stream */
         $stream = $this->getStream();
@@ -129,6 +131,8 @@ class EsmtpTransport extends SmtpTransport
         } catch (TransportExceptionInterface $e) {
             try {
                 parent::doHeloCommand();
+
+                return [];
             } catch (TransportExceptionInterface $ex) {
                 if (!$ex->getCode()) {
                     throw $e;

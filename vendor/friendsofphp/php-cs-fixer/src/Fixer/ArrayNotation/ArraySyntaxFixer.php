@@ -34,29 +34,17 @@ use PhpCsFixer\Tokenizer\Tokens;
 final class ArraySyntaxFixer extends AbstractFixer implements ConfigurableFixerInterface
 {
     /**
-     * @var null|int
+     * @var CT::T_ARRAY_SQUARE_BRACE_OPEN|T_ARRAY
      */
     private $candidateTokenKind;
 
-    /**
-     * @var null|string
-     */
-    private $fixCallback;
-
-    /**
-     * {@inheritdoc}
-     */
     public function configure(array $configuration): void
     {
         parent::configure($configuration);
 
         $this->resolveCandidateTokenKind();
-        $this->resolveFixCallback();
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getDefinition(): FixerDefinitionInterface
     {
         return new FixerDefinition(
@@ -76,38 +64,31 @@ final class ArraySyntaxFixer extends AbstractFixer implements ConfigurableFixerI
     /**
      * {@inheritdoc}
      *
-     * Must run before BinaryOperatorSpacesFixer, TernaryOperatorSpacesFixer.
+     * Must run before BinaryOperatorSpacesFixer, SingleSpaceAfterConstructFixer, SingleSpaceAroundConstructFixer, TernaryOperatorSpacesFixer.
      */
     public function getPriority(): int
     {
-        return 1;
+        return 37;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function isCandidate(Tokens $tokens): bool
     {
         return $tokens->isTokenKindFound($this->candidateTokenKind);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
-        $callback = $this->fixCallback;
-
         for ($index = $tokens->count() - 1; 0 <= $index; --$index) {
             if ($tokens[$index]->isGivenKind($this->candidateTokenKind)) {
-                $this->{$callback}($tokens, $index);
+                if ('short' === $this->configuration['syntax']) {
+                    $this->fixToShortArraySyntax($tokens, $index);
+                } else {
+                    $this->fixToLongArraySyntax($tokens, $index);
+                }
             }
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function createConfigurationDefinition(): FixerConfigurationResolverInterface
     {
         return new FixerConfigurationResolver([
@@ -137,11 +118,6 @@ final class ArraySyntaxFixer extends AbstractFixer implements ConfigurableFixerI
         $tokens[$closeIndex] = new Token([CT::T_ARRAY_SQUARE_BRACE_CLOSE, ']']);
 
         $tokens->clearTokenAndMergeSurroundingWhitespace($index);
-    }
-
-    private function resolveFixCallback(): void
-    {
-        $this->fixCallback = sprintf('fixTo%sArraySyntax', ucfirst($this->configuration['syntax']));
     }
 
     private function resolveCandidateTokenKind(): void

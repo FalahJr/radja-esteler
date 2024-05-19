@@ -152,9 +152,7 @@ final class DocBlock
 
         $usefulLines = array_filter(
             $this->lines,
-            static function (Line $line): bool {
-                return $line->containsUsefulContent();
-            }
+            static fn (Line $line): bool => $line->containsUsefulContent()
         );
 
         if (1 < \count($usefulLines)) {
@@ -185,15 +183,14 @@ final class DocBlock
      */
     public function getAnnotationsOfType($types): array
     {
+        $typesToSearchFor = (array) $types;
+
         $annotations = [];
-        $types = (array) $types;
 
         foreach ($this->getAnnotations() as $annotation) {
-            $tag = $annotation->getTag()->getName();
-            foreach ($types as $type) {
-                if ($type === $tag) {
-                    $annotations[] = $annotation;
-                }
+            $tagName = $annotation->getTag()->getName();
+            if (\in_array($tagName, $typesToSearchFor, true)) {
+                $annotations[] = $annotation;
             }
         }
 

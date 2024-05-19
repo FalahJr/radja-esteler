@@ -40,24 +40,21 @@ final class PhpdocOrderFixer extends AbstractFixer implements ConfigurableFixerI
      */
     private const ORDER_DEFAULT = ['param', 'throws', 'return'];
 
-    /**
-     * {@inheritdoc}
-     */
     public function getDefinition(): FixerDefinitionInterface
     {
         $code = <<<'EOF'
-<?php
-/**
- * Hello there!
- *
- * @throws Exception|RuntimeException foo
- * @custom Test!
- * @return int  Return the number of changes.
- * @param string $foo
- * @param bool   $bar Bar
- */
+            <?php
+            /**
+             * Hello there!
+             *
+             * @throws Exception|RuntimeException foo
+             * @custom Test!
+             * @return int  Return the number of changes.
+             * @param string $foo
+             * @param bool   $bar Bar
+             */
 
-EOF;
+            EOF;
 
         return new FixerDefinition(
             'Annotations in PHPDoc should be ordered in defined sequence.',
@@ -70,9 +67,6 @@ EOF;
         );
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function isCandidate(Tokens $tokens): bool
     {
         return $tokens->isTokenKindFound(T_DOC_COMMENT);
@@ -89,15 +83,12 @@ EOF;
         return -2;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function createConfigurationDefinition(): FixerConfigurationResolverInterface
     {
         return new FixerConfigurationResolver([
             (new FixerOptionBuilder('order', 'Sequence in which annotations in PHPDoc should be ordered.'))
                 ->setAllowedTypes(['string[]'])
-                ->setAllowedValues([function ($order) {
+                ->setAllowedValues([static function (array $order): bool {
                     if (\count($order) < 2) {
                         throw new InvalidOptionsException('The option "order" value is invalid. Minimum two tags are required.');
                     }
@@ -109,11 +100,11 @@ EOF;
         ]);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
+        /** @var list<string> */
+        $order = $this->configuration['order'];
+
         foreach ($tokens as $index => $token) {
             if (!$token->isGivenKind(T_DOC_COMMENT)) {
                 continue;
@@ -123,7 +114,7 @@ EOF;
             $content = $token->getContent();
 
             // sort annotations
-            $successors = $this->configuration['order'];
+            $successors = $order;
             while (\count($successors) >= 3) {
                 $predecessor = array_shift($successors);
                 $content = $this->moveAnnotationsBefore($predecessor, $successors, $content);
@@ -131,7 +122,7 @@ EOF;
 
             // we're parsing the content last time to make sure the internal
             // state of the docblock is correct after the modifications
-            $predecessors = $this->configuration['order'];
+            $predecessors = $order;
             $last = array_pop($predecessors);
             $content = $this->moveAnnotationsAfter($last, $predecessors, $content);
 
@@ -143,8 +134,8 @@ EOF;
     /**
      * Move all given annotations in before given set of annotations.
      *
-     * @param string   $move   Tag of annotations that should be moved
-     * @param string[] $before Tags of annotations that should moved annotations be placed before
+     * @param string       $move   Tag of annotations that should be moved
+     * @param list<string> $before Tags of annotations that should moved annotations be placed before
      */
     private function moveAnnotationsBefore(string $move, array $before, string $content): string
     {
@@ -182,8 +173,8 @@ EOF;
     /**
      * Move all given annotations after given set of annotations.
      *
-     * @param string   $move  Tag of annotations that should be moved
-     * @param string[] $after Tags of annotations that should moved annotations be placed after
+     * @param string       $move  Tag of annotations that should be moved
+     * @param list<string> $after Tags of annotations that should moved annotations be placed after
      */
     private function moveAnnotationsAfter(string $move, array $after, string $content): string
     {

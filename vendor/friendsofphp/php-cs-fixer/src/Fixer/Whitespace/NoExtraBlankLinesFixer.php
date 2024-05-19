@@ -25,6 +25,7 @@ use PhpCsFixer\FixerDefinition\CodeSample;
 use PhpCsFixer\FixerDefinition\FixerDefinition;
 use PhpCsFixer\FixerDefinition\FixerDefinitionInterface;
 use PhpCsFixer\Preg;
+use PhpCsFixer\Tokenizer\Analyzer\SwitchAnalyzer;
 use PhpCsFixer\Tokenizer\CT;
 use PhpCsFixer\Tokenizer\Token;
 use PhpCsFixer\Tokenizer\Tokens;
@@ -37,7 +38,7 @@ use PhpCsFixer\Utils;
 final class NoExtraBlankLinesFixer extends AbstractFixer implements ConfigurableFixerInterface, WhitespacesAwareFixerInterface
 {
     /**
-     * @var string[]
+     * @var list<string>
      */
     private static array $availableTokens = [
         'attribute',
@@ -57,12 +58,12 @@ final class NoExtraBlankLinesFixer extends AbstractFixer implements Configurable
     ];
 
     /**
-     * @var array<int, string> key is token id, value is name of callback
+     * @var array<int, callable(int): void> key is token id
      */
     private array $tokenKindCallbackMap;
 
     /**
-     * @var array<string, string> token prototype, value is name of callback
+     * @var array<string, callable(int): void> key is token's content
      */
     private array $tokenEqualsMap;
 
@@ -70,9 +71,6 @@ final class NoExtraBlankLinesFixer extends AbstractFixer implements Configurable
 
     private TokensAnalyzer $tokensAnalyzer;
 
-    /**
-     * {@inheritdoc}
-     */
     public function configure(array $configuration): void
     {
         if (isset($configuration['tokens']) && \in_array('use_trait', $configuration['tokens'], true)) {
@@ -86,26 +84,27 @@ final class NoExtraBlankLinesFixer extends AbstractFixer implements Configurable
         $this->tokenEqualsMap = [];
 
         if (\in_array('curly_brace_block', $tokensConfiguration, true)) {
-            $this->tokenEqualsMap['{'] = 'fixStructureOpenCloseIfMultiLine'; // i.e. not: CT::T_ARRAY_INDEX_CURLY_BRACE_OPEN
+            $this->tokenEqualsMap['{'] = [$this, 'fixStructureOpenCloseIfMultiLine']; // i.e. not: CT::T_ARRAY_INDEX_CURLY_BRACE_OPEN
         }
 
         if (\in_array('parenthesis_brace_block', $tokensConfiguration, true)) {
-            $this->tokenEqualsMap['('] = 'fixStructureOpenCloseIfMultiLine'; // i.e. not: CT::T_BRACE_CLASS_INSTANTIATION_OPEN
+            $this->tokenEqualsMap['('] = [$this, 'fixStructureOpenCloseIfMultiLine']; // i.e. not: CT::T_BRACE_CLASS_INSTANTIATION_OPEN
         }
 
-        static $configMap = [
-            'attribute' => [CT::T_ATTRIBUTE_CLOSE, 'fixAfterToken'],
-            'break' => [T_BREAK, 'fixAfterToken'],
-            'case' => [T_CASE, 'fixAfterCaseToken'],
-            'continue' => [T_CONTINUE, 'fixAfterToken'],
-            'default' => [T_DEFAULT, 'fixAfterToken'],
-            'extra' => [T_WHITESPACE, 'removeMultipleBlankLines'],
-            'return' => [T_RETURN, 'fixAfterToken'],
-            'square_brace_block' => [CT::T_ARRAY_SQUARE_BRACE_OPEN, 'fixStructureOpenCloseIfMultiLine'],
-            'switch' => [T_SWITCH, 'fixAfterToken'],
-            'throw' => [T_THROW, 'fixAfterThrowToken'],
-            'use' => [T_USE, 'removeBetweenUse'],
-            'use_trait' => [CT::T_USE_TRAIT, 'removeBetweenUse'],
+        // Each item requires explicit array-like callable, otherwise PHPStan will complain about unused private methods.
+        $configMap = [
+            'attribute' => [CT::T_ATTRIBUTE_CLOSE, [$this, 'fixAfterToken']],
+            'break' => [T_BREAK, [$this, 'fixAfterToken']],
+            'case' => [T_CASE, [$this, 'fixAfterCaseToken']],
+            'continue' => [T_CONTINUE, [$this, 'fixAfterToken']],
+            'default' => [T_DEFAULT, [$this, 'fixAfterToken']],
+            'extra' => [T_WHITESPACE, [$this, 'removeMultipleBlankLines']],
+            'return' => [T_RETURN, [$this, 'fixAfterToken']],
+            'square_brace_block' => [CT::T_ARRAY_SQUARE_BRACE_OPEN, [$this, 'fixStructureOpenCloseIfMultiLine']],
+            'switch' => [T_SWITCH, [$this, 'fixAfterToken']],
+            'throw' => [T_THROW, [$this, 'fixAfterThrowToken']],
+            'use' => [T_USE, [$this, 'removeBetweenUse']],
+            'use_trait' => [CT::T_USE_TRAIT, [$this, 'removeBetweenUse']],
         ];
 
         $this->tokenKindCallbackMap = [];
@@ -117,9 +116,6 @@ final class NoExtraBlankLinesFixer extends AbstractFixer implements Configurable
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getDefinition(): FixerDefinitionInterface
     {
         return new FixerDefinition(
@@ -261,24 +257,18 @@ switch($a) {
      * {@inheritdoc}
      *
      * Must run before BlankLineBeforeStatementFixer.
-     * Must run after ClassAttributesSeparationFixer, CombineConsecutiveUnsetsFixer, EmptyLoopBodyFixer, EmptyLoopConditionFixer, FunctionToConstantFixer, ModernizeStrposFixer, NoEmptyCommentFixer, NoEmptyPhpdocFixer, NoEmptyStatementFixer, NoUnusedImportsFixer, NoUselessElseFixer, NoUselessReturnFixer, NoUselessSprintfFixer, StringLengthToEmptyFixer.
+     * Must run after ClassAttributesSeparationFixer, CombineConsecutiveUnsetsFixer, EmptyLoopBodyFixer, EmptyLoopConditionFixer, FunctionToConstantFixer, LongToShorthandOperatorFixer, ModernizeStrposFixer, NoEmptyCommentFixer, NoEmptyPhpdocFixer, NoEmptyStatementFixer, NoUnusedImportsFixer, NoUselessElseFixer, NoUselessReturnFixer, NoUselessSprintfFixer, PhpdocReadonlyClassCommentToKeywordFixer, StringLengthToEmptyFixer, YieldFromArrayToYieldsFixer.
      */
     public function getPriority(): int
     {
         return -20;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function isCandidate(Tokens $tokens): bool
     {
         return true;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
         $this->tokens = $tokens;
@@ -289,9 +279,6 @@ switch($a) {
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function createConfigurationDefinition(): FixerConfigurationResolverInterface
     {
         return new FixerConfigurationResolver([
@@ -303,6 +290,14 @@ switch($a) {
         ]);
     }
 
+    /**
+     * @uses fixAfterToken()
+     * @uses fixAfterCaseToken()
+     * @uses fixAfterThrowToken()
+     * @uses fixStructureOpenCloseIfMultiLine()
+     * @uses removeBetweenUse()
+     * @uses removeMultipleBlankLines()
+     */
     private function fixByToken(Token $token, int $index): void
     {
         foreach ($this->tokenKindCallbackMap as $kind => $callback) {
@@ -310,7 +305,7 @@ switch($a) {
                 continue;
             }
 
-            $this->{$callback}($index);
+            \call_user_func_array($this->tokenKindCallbackMap[$token->getId()], [$index]);
 
             return;
         }
@@ -320,7 +315,7 @@ switch($a) {
                 continue;
             }
 
-            $this->{$callback}($index);
+            \call_user_func_array($this->tokenEqualsMap[$token->getContent()], [$index]);
 
             return;
         }
@@ -345,7 +340,7 @@ switch($a) {
 
     private function removeMultipleBlankLines(int $index): void
     {
-        $expected = $this->tokens[$index - 1]->isGivenKind(T_OPEN_TAG) && 1 === Preg::match('/\R$/', $this->tokens[$index - 1]->getContent()) ? 1 : 2;
+        $expected = $this->tokens[$index - 1]->isGivenKind(T_OPEN_TAG) && Preg::match('/\R$/', $this->tokens[$index - 1]->getContent()) ? 1 : 2;
 
         $parts = Preg::split('/(.*\R)/', $this->tokens[$index]->getContent(), -1, PREG_SPLIT_DELIM_CAPTURE | PREG_SPLIT_NO_EMPTY);
         $count = \count($parts);
@@ -389,9 +384,17 @@ switch($a) {
 
     private function fixAfterThrowToken(int $index): void
     {
-        if ($this->tokens[$this->tokens->getPrevMeaningfulToken($index)]->equalsAny([';', '{', '}', ':', [T_OPEN_TAG]])) {
-            $this->fixAfterToken($index);
+        $prevIndex = $this->tokens->getPrevMeaningfulToken($index);
+
+        if (!$this->tokens[$prevIndex]->equalsAny([';', '{', '}', ':', [T_OPEN_TAG]])) {
+            return;
         }
+
+        if ($this->tokens[$prevIndex]->equals(':') && !SwitchAnalyzer::belongsToSwitch($this->tokens, $prevIndex)) {
+            return;
+        }
+
+        $this->fixAfterToken($index);
     }
 
     /**
@@ -418,8 +421,24 @@ switch($a) {
     private function removeEmptyLinesAfterLineWithTokenAt(int $index): void
     {
         // find the line break
+        $parenthesesDepth = 0;
         $tokenCount = \count($this->tokens);
         for ($end = $index; $end < $tokenCount; ++$end) {
+            if ($this->tokens[$end]->equals('(')) {
+                ++$parenthesesDepth;
+
+                continue;
+            }
+
+            if ($this->tokens[$end]->equals(')')) {
+                --$parenthesesDepth;
+                if ($parenthesesDepth < 0) {
+                    return;
+                }
+
+                continue;
+            }
+
             if (
                 $this->tokens[$end]->equals('}')
                 || str_contains($this->tokens[$end]->getContent(), "\n")

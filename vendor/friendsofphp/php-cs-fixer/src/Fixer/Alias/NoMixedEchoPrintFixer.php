@@ -32,34 +32,17 @@ use PhpCsFixer\Tokenizer\Tokens;
 final class NoMixedEchoPrintFixer extends AbstractFixer implements ConfigurableFixerInterface
 {
     /**
-     * @var string
+     * @var T_ECHO|T_PRINT
      */
-    private $callBack;
+    private int $candidateTokenType;
 
-    /**
-     * @var int T_ECHO or T_PRINT
-     */
-    private $candidateTokenType;
-
-    /**
-     * {@inheritdoc}
-     */
     public function configure(array $configuration): void
     {
         parent::configure($configuration);
 
-        if ('echo' === $this->configuration['use']) {
-            $this->candidateTokenType = T_PRINT;
-            $this->callBack = 'fixPrintToEcho';
-        } else {
-            $this->candidateTokenType = T_ECHO;
-            $this->callBack = 'fixEchoToPrint';
-        }
+        $this->candidateTokenType = 'echo' === $this->configuration['use'] ? T_PRINT : T_ECHO;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getDefinition(): FixerDefinitionInterface
     {
         return new FixerDefinition(
@@ -81,30 +64,24 @@ final class NoMixedEchoPrintFixer extends AbstractFixer implements ConfigurableF
         return -10;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function isCandidate(Tokens $tokens): bool
     {
         return $tokens->isTokenKindFound($this->candidateTokenType);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function applyFix(\SplFileInfo $file, Tokens $tokens): void
     {
-        $callBack = $this->callBack;
         foreach ($tokens as $index => $token) {
             if ($token->isGivenKind($this->candidateTokenType)) {
-                $this->{$callBack}($tokens, $index);
+                if (T_PRINT === $this->candidateTokenType) {
+                    $this->fixPrintToEcho($tokens, $index);
+                } else {
+                    $this->fixEchoToPrint($tokens, $index);
+                }
             }
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function createConfigurationDefinition(): FixerConfigurationResolverInterface
     {
         return new FixerConfigurationResolver([

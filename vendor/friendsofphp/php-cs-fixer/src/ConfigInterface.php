@@ -15,7 +15,6 @@ declare(strict_types=1);
 namespace PhpCsFixer;
 
 use PhpCsFixer\Fixer\FixerInterface;
-use SplFileInfo;
 
 /**
  * @author Fabien Potencier <fabien@symfony.com>
@@ -33,14 +32,14 @@ interface ConfigInterface
     /**
      * Returns the custom fixers to use.
      *
-     * @return FixerInterface[]
+     * @return list<FixerInterface>
      */
     public function getCustomFixers(): array;
 
     /**
      * Returns files to scan.
      *
-     * @return iterable<SplFileInfo>
+     * @return iterable<\SplFileInfo>
      */
     public function getFinder(): iterable;
 
@@ -93,7 +92,7 @@ interface ConfigInterface
      *
      * Name of custom fixer should follow `VendorName/rule_name` convention.
      *
-     * @param FixerInterface[]|iterable|\Traversable $fixers
+     * @param iterable<FixerInterface> $fixers
      */
     public function registerCustomFixers(iterable $fixers): self;
 
@@ -103,7 +102,7 @@ interface ConfigInterface
     public function setCacheFile(string $cacheFile): self;
 
     /**
-     * @param iterable<SplFileInfo> $finder
+     * @param iterable<\SplFileInfo> $finder
      */
     public function setFinder(iterable $finder): self;
 

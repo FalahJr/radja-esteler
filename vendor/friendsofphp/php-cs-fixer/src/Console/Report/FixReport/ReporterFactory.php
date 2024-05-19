@@ -23,9 +23,7 @@ use Symfony\Component\Finder\Finder as SymfonyFinder;
  */
 final class ReporterFactory
 {
-    /**
-     * @var array<string, ReporterInterface>
-     */
+    /** @var array<string, ReporterInterface> */
     private array $reporters = [];
 
     public function registerBuiltInReporters(): self
@@ -39,9 +37,9 @@ final class ReporterFactory
             foreach (SymfonyFinder::create()->files()->name('*Reporter.php')->in(__DIR__) as $file) {
                 $relativeNamespace = $file->getRelativePath();
                 $builtInReporters[] = sprintf(
-                    '%s\\%s%s',
+                    '%s\%s%s',
                     __NAMESPACE__,
-                    $relativeNamespace ? $relativeNamespace.'\\' : '',
+                    '' !== $relativeNamespace ? $relativeNamespace.'\\' : '',
                     $file->getBasename('.php')
                 );
             }

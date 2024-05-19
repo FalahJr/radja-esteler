@@ -32,27 +32,11 @@ use PhpCsFixer\Tokenizer\Tokens;
  */
 final class PhpUnitConstructFixer extends AbstractPhpUnitFixer implements ConfigurableFixerInterface
 {
-    /**
-     * @var array<string,string>
-     */
-    private static array $assertionFixers = [
-        'assertSame' => 'fixAssertPositive',
-        'assertEquals' => 'fixAssertPositive',
-        'assertNotEquals' => 'fixAssertNegative',
-        'assertNotSame' => 'fixAssertNegative',
-    ];
-
-    /**
-     * {@inheritdoc}
-     */
     public function isRisky(): bool
     {
         return true;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getDefinition(): FixerDefinitionInterface
     {
         return new FixerDefinition(
@@ -100,20 +84,24 @@ final class FooTest extends \PHPUnit_Framework_TestCase {
     }
 
     /**
-     * {@inheritdoc}
+     * @uses fixAssertNegative()
+     * @uses fixAssertPositive()
      */
     protected function applyPhpUnitClassFix(Tokens $tokens, int $startIndex, int $endIndex): void
     {
         // no assertions to be fixed - fast return
-        if (empty($this->configuration['assertions'])) {
+        if ([] === $this->configuration['assertions']) {
             return;
         }
 
         foreach ($this->configuration['assertions'] as $assertionMethod) {
-            $assertionFixer = self::$assertionFixers[$assertionMethod];
-
             for ($index = $startIndex; $index < $endIndex; ++$index) {
-                $index = $this->{$assertionFixer}($tokens, $index, $assertionMethod);
+                $index = \call_user_func_array(
+                    \in_array($assertionMethod, ['assertSame', 'assertEquals'], true)
+                        ? [$this, 'fixAssertPositive']
+                        : [$this, 'fixAssertNegative'],
+                    [$tokens, $index, $assertionMethod]
+                );
 
                 if (null === $index) {
                     break;
@@ -122,21 +110,20 @@ final class FooTest extends \PHPUnit_Framework_TestCase {
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
     protected function createConfigurationDefinition(): FixerConfigurationResolverInterface
     {
+        $assertMethods = [
+            'assertEquals',
+            'assertSame',
+            'assertNotEquals',
+            'assertNotSame',
+        ];
+
         return new FixerConfigurationResolver([
             (new FixerOptionBuilder('assertions', 'List of assertion methods to fix.'))
                 ->setAllowedTypes(['array'])
-                ->setAllowedValues([new AllowedValueSubset(array_keys(self::$assertionFixers))])
-                ->setDefault([
-                    'assertEquals',
-                    'assertSame',
-                    'assertNotEquals',
-                    'assertNotSame',
-                ])
+                ->setAllowedValues([new AllowedValueSubset($assertMethods)])
+                ->setDefault($assertMethods)
                 ->getOption(),
         ]);
     }
