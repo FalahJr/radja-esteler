@@ -10,18 +10,18 @@ use yii\grid\GridView;
 /** @var app\models\BeritaSearch $searchModel */
 /** @var yii\data\ActiveDataProvider $dataProvider */
 
-$this->title = 'Beritas';
+$this->title = 'Berita';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 <div class="berita-index">
 
-    <h1><?= Html::encode($this->title) ?></h1>
 
     <p>
-        <?= Html::a('Create Berita', ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a('Tambah Berita', ['create'], ['class' => 'btn btn-success']) ?>
     </p>
 
-    <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
+    <?php // echo $this->render('_search', ['model' => $searchModel]); 
+    ?>
 
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
@@ -29,17 +29,30 @@ $this->params['breadcrumbs'][] = $this->title;
         'columns' => [
             ['class' => 'yii\grid\SerialColumn'],
 
-            'id',
+            [
+                'attribute' => 'gambar',
+                'format' => 'html',
+                'value' => function ($data) {
+                    return Html::img(
+                        '../../uploads/image/' . $data['gambar'],
+                        [
+                            'width' => '150px'
+                        ]
+                    );
+                },
+
+            ],
+            // 'id',
             'judul',
             'deskripsi:ntext',
-            'gambar',
-            'created_at',
-            //'updated_at',
+            // 'gambar',
+            // 'created_date',
+            //'updated_date',
             [
                 'class' => ActionColumn::className(),
                 'urlCreator' => function ($action, Berita $model, $key, $index, $column) {
                     return Url::toRoute([$action, 'id' => $model->id]);
-                 }
+                }
             ],
         ],
     ]); ?>

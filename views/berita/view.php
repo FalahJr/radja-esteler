@@ -6,14 +6,14 @@ use yii\widgets\DetailView;
 /** @var yii\web\View $this */
 /** @var app\models\Berita $model */
 
-$this->title = $model->id;
+$this->title = $model->judul;
 $this->params['breadcrumbs'][] = ['label' => 'Beritas', 'url' => ['index']];
 $this->params['breadcrumbs'][] = $this->title;
 \yii\web\YiiAsset::register($this);
 ?>
 <div class="berita-view">
 
-    <h1><?= Html::encode($this->title) ?></h1>
+    <!-- <h1><?= Html::encode($this->title) ?></h1> -->
 
     <p>
         <?= Html::a('Update', ['update', 'id' => $model->id], ['class' => 'btn btn-primary']) ?>
@@ -29,12 +29,22 @@ $this->params['breadcrumbs'][] = $this->title;
     <?= DetailView::widget([
         'model' => $model,
         'attributes' => [
+            [
+                'attribute' => 'gambar',
+                'format' => 'html',
+                'value' => function ($data) {
+                    return Html::img('../../uploads/image/' . $data['gambar'], [
+                        'width' => '150px'
+                    ]);
+                },
+
+            ],
             'id',
             'judul',
             'deskripsi:ntext',
-            'gambar',
-            'created_at',
-            'updated_at',
+            // 'gambar',
+            'created_date',
+            'updated_date',
         ],
     ]) ?>
 
