@@ -4,9 +4,11 @@ namespace app\controllers;
 
 use app\models\Berita;
 use app\models\BeritaSearch;
+use Yii;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\web\UploadedFile;
 
 /**
  * BeritaController implements the CRUD actions for Berita model.
@@ -67,14 +69,40 @@ class BeritaController extends Controller
      */
     public function actionCreate()
     {
-        $model = new Berita();
+        // $model = new Berita();
 
-        if ($this->request->isPost) {
-            if ($model->load($this->request->post()) && $model->save()) {
-                return $this->redirect(['view', 'id' => $model->id]);
+        // if ($this->request->isPost) {
+        //     if ($model->load($this->request->post()) && $model->save()) {
+        //         return $this->redirect(['view', 'id' => $model->id]);
+        //     }
+        // } else {
+        //     $model->loadDefaultValues();
+        // }
+
+        // return $this->render('create', [
+        //     'model' => $model,
+        // ]);
+
+        $model = new Berita();
+        if ($model->load(Yii::$app->request->post())) {
+
+            $url_gambar = UploadedFile::getInstance($model, 'gambar');
+            $model->gambar = $url_gambar->name;
+
+            // NodeLogger::sendLog(['gambar' => $model->gambar]);
+
+            if ($model->validate()) {
+                $saveTo = '../uploads/image/' . $url_gambar->baseName . '.' . $url_gambar->extension;
+
+                if ($url_gambar->saveAs($saveTo)) {
+                    $model->save();
+                    yii::$app->session->setFlash('success', 'Data berhasil diupload');
+                    return $this->redirect(['view', 'id' => $model->id]);
+                }
+            } else {
+                echo "gagal";
+                $model->loadDefaultValues();
             }
-        } else {
-            $model->loadDefaultValues();
         }
 
         return $this->render('create', [
@@ -91,15 +119,37 @@ class BeritaController extends Controller
      */
     public function actionUpdate($id)
     {
+        // $model = $this->findModel($id);
+
+        // if ($this->request->isPost && $model->load($this->request->post()) && $model->save()) {
+        //     return $this->redirect(['view', 'id' => $model->id]);
+        // }
+
+        // return $this->render('update', [
+        //     'model' => $model,
+        // ]);
+
         $model = $this->findModel($id);
 
-        if ($this->request->isPost && $model->load($this->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
-        }
+        if ($model->load(Yii::$app->request->post())) {
+            $url_gambar = UploadedFile::getInstance($model, 'gambar');
+            $model->gambar = $url_gambar->name;
 
-        return $this->render('update', [
-            'model' => $model,
-        ]);
+            // NodeLogger::sendLog(['gambar' => $model->gambar != null]);
+
+            if ($model->gambar != null) {
+                $saveTo = '../uploads/image/' . $url_gambar->baseName . '.' . $url_gambar->extension;
+                $url_gambar->saveAs($saveTo);
+                $model->save();
+                return $this->redirect(['view', 'id' => $model->id]);
+            }
+            $model->save();
+            return $this->redirect(['view', 'id' => $model->id]);
+        } else {
+            return $this->render('update', [
+                'model' => $model,
+            ]);
+        }
     }
 
     /**
