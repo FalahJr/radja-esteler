@@ -2,6 +2,7 @@
 
 namespace app\controllers;
 
+use app\models\Berita;
 use Yii;
 use yii\filters\AccessControl;
 use yii\web\Controller;
@@ -61,12 +62,33 @@ class PublicController extends Controller
         ]);
     }
 
+
+
     public function actionDetailMenu($id)
     {
         $detail_menu = Menu::find()->where(['id' => $id])->one();
 
         return $this->render('detail-menu', [
             'detail_menu' => $detail_menu,
+        ]);
+    }
+
+    public function actionBerita()
+    {
+        $berita = Berita::find()->all();
+
+        return $this->render('berita', [
+            'berita' => $berita,
+
+        ]);
+    }
+
+    public function actionDetailBerita($id)
+    {
+        $detail_berita = Berita::find()->where(['id' => $id])->one();
+
+        return $this->render('detail-berita', [
+            'detail_berita' => $detail_berita,
         ]);
     }
 
