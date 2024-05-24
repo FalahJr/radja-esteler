@@ -49,6 +49,7 @@ if (Yii::$app->user->isGuest) {
                     // ],
                     ['label' => 'Daftar Menu', 'url' => ['menu/index'], 'iconStyle' => 'far'],
                     ['label' => 'Daftar Berita', 'url' => ['berita/index'], 'iconStyle' => 'far'],
+                    ['label' => 'Daftar Konten', 'url' => ['konten/index'], 'iconStyle' => 'far'],
 
 
                 ],
