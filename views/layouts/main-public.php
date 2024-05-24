@@ -61,6 +61,9 @@ $this->registerLinkTag(['rel' => 'icon', 'type' => 'image/x-icon', 'href' => '@w
                 <li class="nav-item">
                     <?= Html::a('Berita', ['berita'], ['class' => 'nav-link nunitoSemiBold']) ?>
                 </li>
+                <li class="nav-item">
+                    <?= Html::a('Konten', ['konten'], ['class' => 'nav-link nunitoSemiBold']) ?>
+                </li>
             </ul>
         </div>
     </nav>
