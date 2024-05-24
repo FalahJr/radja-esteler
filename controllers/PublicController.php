@@ -3,6 +3,7 @@
 namespace app\controllers;
 
 use app\models\Berita;
+use app\models\Konten;
 use Yii;
 use yii\filters\AccessControl;
 use yii\web\Controller;
@@ -58,6 +59,16 @@ class PublicController extends Controller
 
         return $this->render('menu', [
             'menu' => $menu,
+
+        ]);
+    }
+
+    public function actionKonten()
+    {
+        $konten = Konten::find()->all();
+
+        return $this->render('konten', [
+            'konten' => $konten,
 
         ]);
     }
